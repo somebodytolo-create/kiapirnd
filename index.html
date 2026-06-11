@@ -367,7 +367,7 @@ new Chart(rc, {
     ctx.textAlign='center';ctx.fillText('80%',x,c.chartArea.top-5);ctx.restore();}}]
 });
 
-/* ── 연구수당 지급 요건 표 ── */
+/* ── 과제별 직접비 집행률 표 (기준 80%) ── */
 document.querySelector('#allow-table tbody').innerHTML = withBud.map(([name,p])=>{
   const ok = p.rate_direct>=0.8;
   const need = Math.max(0, 0.8*p.budget_direct - p.exec_direct);
