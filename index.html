@@ -50,16 +50,27 @@ button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
 /* ── KPI ── */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:20px 22px;transition:box-shadow .2s;position:relative;overflow:hidden}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--kc,var(--accent))}
-.kpi:hover{box-shadow:0 8px 24px rgba(25,31,40,.06)}
-.kpi-ic{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;
-  font-size:17px;margin-bottom:12px;background:var(--kbg,var(--accent-bg))}
-.kpi .lb{font-size:13px;color:var(--text3);font-weight:600;margin-bottom:8px}
-.kpi .vl{font-size:27px;font-weight:800;letter-spacing:-.5px}
-.kpi .vl .unit{font-size:15px;font-weight:600;color:var(--text2);margin-left:2px}
-.kpi .sb{font-size:12px;color:var(--text3);margin-top:6px}
+  padding:22px;transition:all .2s;position:relative}
+.kpi:hover{box-shadow:0 10px 28px rgba(25,31,40,.08);transform:translateY(-2px)}
+.kpi-hd{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.kpi-ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:var(--kbg,var(--accent-bg));color:var(--kc,var(--accent));flex-shrink:0}
+.kpi-ic svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.kpi .lb{font-size:12.5px;color:var(--text3);font-weight:700;letter-spacing:.2px}
+.kpi .vl{font-size:28px;font-weight:800;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
+.kpi .vl .unit{font-size:14px;font-weight:600;color:var(--text3);margin-left:3px}
+.kpi .sb{font-size:12px;color:var(--text3);margin-top:7px}
 .kpi .sb b{color:var(--text2)}
+
+/* ── 메인 탭 ── */
+.vtabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:5px;margin-bottom:18px;width:fit-content;max-width:100%;overflow-x:auto}
+.vtab{padding:9px 20px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--text3);
+  white-space:nowrap;transition:all .18s}
+.vtab:hover:not(.on){color:var(--text2);background:var(--bg)}
+.vtab.on{background:var(--grad);color:#fff;box-shadow:0 3px 10px rgba(91,95,232,.28)}
+.view{display:none}.view.on{display:block}
 .kpi-prog{margin-top:12px;height:8px;border-radius:99px;background:var(--bg);overflow:hidden;position:relative}
 .kpi-prog>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#3182f6,#5fa2f8)}
 .kpi-prog .mark{position:absolute;top:-2px;width:2px;height:12px;background:var(--text3);border-radius:1px}
@@ -216,6 +227,13 @@ tbody tr:hover{background:#fafbfc}
 
   <div class="kpis" id="kpis"></div>
 
+  <div class="vtabs" id="vtabs">
+    <button class="vtab on" data-v="overview">집행 개요</button>
+    <button class="vtab" data-v="rate">직접비 집행률</button>
+    <button class="vtab" data-v="projects">과제 목록</button>
+  </div>
+
+  <div class="view on" id="view-overview">
   <div class="row-2">
     <div class="card">
       <h2>과제별 직접비 집행률</h2>
@@ -241,7 +259,9 @@ tbody tr:hover{background:#fafbfc}
       </table></div>
     </div>
   </div>
+  </div>
 
+  <div class="view" id="view-rate">
   <div class="card">
     <h2>과제별 직접비 집행률 현황</h2>
     <div class="desc">관리 기준 80% · 단위: 백만원</div>
@@ -251,7 +271,9 @@ tbody tr:hover{background:#fafbfc}
       <tbody></tbody>
     </table></div>
   </div>
+  </div>
 
+  <div class="view" id="view-projects">
   <div class="card">
     <h2>과제 목록</h2>
     <div class="desc">카드를 클릭하면 상세 집행 내역을 볼 수 있습니다</div>
@@ -265,6 +287,7 @@ tbody tr:hover{background:#fafbfc}
       </select>
     </div>
     <div class="proj-grid" id="grid"></div>
+  </div>
   </div>
 
   <div class="footer">본 대시보드는 과제별 Excel 파일에서 자동 생성됩니다 · 생성일 <span id="gen-date"></span></div>
@@ -311,25 +334,38 @@ document.getElementById('gen-date').textContent = DATA.generated;
 /* ── KPI ── */
 const avgEl = S.avg_elapsed;  // 협약기간 경과율 가중평균 (null 가능)
 const avgElPct = avgEl==null ? null : (avgEl*100).toFixed(1);
+const IC = {
+  wallet:'<svg viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>',
+  trend:'<svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
+  pct:'<svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>',
+  case:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>'
+};
 document.getElementById('kpis').innerHTML = `
-  <div class="kpi" style="--kc:#3182f6;--kbg:#eaf2fe"><div class="kpi-ic">💰</div>
-    <div class="lb">총 연구비 예산</div>
+  <div class="kpi" style="--kc:#3182f6;--kbg:#eaf2fe">
+    <div class="kpi-hd"><div class="kpi-ic">${IC.wallet}</div><div class="lb">총 연구비 예산</div></div>
     <div class="vl">${uk(S.bt_total)}<span class="unit">억 원</span></div>
     <div class="sb">직접비 ${uk(S.bd_total)}억 · 간접비 포함</div></div>
-  <div class="kpi" style="--kc:#7c5cf6;--kbg:#f1ecfe"><div class="kpi-ic">📤</div>
-    <div class="lb">직접비 집행액</div>
+  <div class="kpi" style="--kc:#7c5cf6;--kbg:#f1ecfe">
+    <div class="kpi-hd"><div class="kpi-ic">${IC.trend}</div><div class="lb">직접비 집행액</div></div>
     <div class="vl">${uk(S.ex_d)}<span class="unit">억 원</span></div>
     <div class="sb">잔액 <b>${uk(S.bd_total-S.ex_d)}억 원</b></div></div>
-  <div class="kpi" style="--kc:${rcol(S.rate_d)};--kbg:#fdebed"><div class="kpi-ic">📊</div>
-    <div class="lb">직접비 집행률</div>
+  <div class="kpi" style="--kc:${rcol(S.rate_d)};--kbg:${S.rate_d>=0.3?'#e5f6ef':'#fdebed'}">
+    <div class="kpi-hd"><div class="kpi-ic">${IC.pct}</div><div class="lb">직접비 집행률</div></div>
     <div class="vl" style="color:${rcol(S.rate_d)}">${(S.rate_d*100).toFixed(1)}<span class="unit">%</span></div>
     <div class="sb">${avgElPct!=null?`협약기간 경과율 평균 ${avgElPct}%`:'&nbsp;'}</div>
     <div class="kpi-prog"><i style="width:${Math.min(S.rate_d*100,100)}%"></i>
       ${avgEl!=null?`<span class="mark" style="left:${Math.min(avgEl*100,100)}%"></span>`:''}</div></div>
-  <div class="kpi" style="--kc:#00a86b;--kbg:#e5f6ef"><div class="kpi-ic">📁</div>
-    <div class="lb">관리 과제</div>
+  <div class="kpi" style="--kc:#00a86b;--kbg:#e5f6ef">
+    <div class="kpi-hd"><div class="kpi-ic">${IC.case}</div><div class="lb">관리 과제</div></div>
     <div class="vl">${S.n_total}<span class="unit">개</span></div>
     <div class="sb">집행 중 <b>${S.n_exec}</b> · 집행 전 ${S.n_bud_only} · 미입력 ${S.n_no_bud}</div></div>`;
+
+/* ── 메인 탭 전환 ── */
+document.getElementById('vtabs').addEventListener('click',e=>{
+  const b=e.target.closest('.vtab'); if(!b)return;
+  document.querySelectorAll('.vtab').forEach(t=>t.classList.toggle('on',t===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='view-'+b.dataset.v));
+});
 
 /* ── 과제별 집행률 차트 ── */
 const withBud = Object.entries(P).filter(([,p])=>p.has_budget)
