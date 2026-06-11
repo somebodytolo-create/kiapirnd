@@ -507,8 +507,8 @@ function renderGrid(){
   let list = Object.entries(P);
   if(fMin!=='전체') list=list.filter(([,p])=>(p.ministry||'기타')===fMin);
   list.sort((a,b)=>{
-    if(fSort==='rate') return b[1].rate_direct-a[1].rate_direct;
-    if(fSort==='rate-asc') return a[1].rate_direct-b[1].rate_direct;
+    if(fSort==='rate') return b[1].rate_total-a[1].rate_total;
+    if(fSort==='rate-asc') return a[1].rate_total-b[1].rate_total;
     if(fSort==='budget') return b[1].budget_total-a[1].budget_total;
     return a[0].localeCompare(b[0],'ko');
   });
@@ -517,13 +517,13 @@ function renderGrid(){
     const body = p.has_budget ? `
       <div class="pcard-nums">
         <div><div class="l">총 예산</div><div class="v">${mm(p.budget_total)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
-        <div><div class="l">집행</div><div class="v">${mm(p.exec_direct)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
-        <div><div class="l">잔액</div><div class="v">${mm(p.budget_direct-p.exec_direct)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
+        <div><div class="l">집행</div><div class="v">${mm(p.exec_total)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
+        <div><div class="l">직접비 집행률</div><div class="v" style="color:${rcol(p.rate_direct)}">${pct(p.rate_direct)}</div></div>
       </div>` : `<div class="nobud">예산 미입력</div>`;
     return `<button class="pcard" data-n="${name.replace(/"/g,'&quot;')}">
       <div class="pcard-top">
         <div><div class="pcard-name">${name}</div><div class="pcard-mgr">${p.manager||''}</div></div>
-        ${p.has_budget?ringSvg(p.rate_direct):''}
+        ${p.has_budget?`<div style="text-align:center">${ringSvg(p.rate_total)}<div style="font-size:10px;color:var(--text3);margin-top:2px">총 집행률</div></div>`:''}
       </div>
       <div class="badges">
         <span class="bdg ${mCls}">${p.ministry||'기타'}</span>
