@@ -36,9 +36,11 @@ button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
 .topbar-in{max-width:1280px;margin:0 auto;padding:14px 24px;
   display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-logo{width:34px;height:34px;border-radius:10px;background:var(--grad);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;
+.brand-logo{width:36px;height:36px;border-radius:11px;background:var(--grad);
+  display:flex;align-items:center;justify-content:center;
   box-shadow:0 4px 10px rgba(91,95,232,.3)}
+.brand-logo svg{width:19px;height:19px;stroke:#fff;stroke-width:2.2;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
 .brand h1{font-size:16px;font-weight:800;letter-spacing:-.3px}
 .brand .org{font-size:12px;color:var(--text3);font-weight:500}
 .asof{font-size:12px;color:var(--text2);background:var(--accent-bg);border:1px solid #dfe2fc;
@@ -49,21 +51,21 @@ button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
 
 /* ── KPI ── */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-.kpi{background:linear-gradient(155deg,var(--kbg,var(--accent-bg)) 0%,#ffffff 62%);
-  border:1px solid var(--line);border-radius:var(--radius);
+.kpi{background:var(--kbg,var(--accent-bg));
+  border:1px solid color-mix(in srgb,var(--kc,var(--accent)) 20%,#fff);border-radius:var(--radius);
   padding:22px;transition:all .2s;position:relative}
-.kpi:hover{box-shadow:0 10px 28px rgba(25,31,40,.08);transform:translateY(-2px)}
-.kpi .kpi-ic{background:#fff;box-shadow:0 2px 8px rgba(25,31,40,.07)}
+.kpi:hover{box-shadow:0 10px 28px color-mix(in srgb,var(--kc,var(--accent)) 18%,transparent);transform:translateY(-2px)}
 .kpi-hd{display:flex;align-items:center;gap:11px;margin-bottom:14px}
 .kpi-ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  background:var(--kbg,var(--accent-bg));color:var(--kc,var(--accent));flex-shrink:0}
+  background:var(--kc,var(--accent));color:#fff;flex-shrink:0;
+  box-shadow:0 4px 10px color-mix(in srgb,var(--kc,var(--accent)) 35%,transparent)}
 .kpi-ic svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;
   stroke-linecap:round;stroke-linejoin:round}
-.kpi .lb{font-size:12.5px;color:var(--text3);font-weight:700;letter-spacing:.2px}
+.kpi .lb{font-size:12.5px;color:color-mix(in srgb,var(--kc,var(--accent)) 55%,var(--text));font-weight:800;letter-spacing:.2px}
 .kpi .vl{font-size:28px;font-weight:800;letter-spacing:-.6px;font-variant-numeric:tabular-nums}
 .kpi .vl .unit{font-size:14px;font-weight:600;color:var(--text3);margin-left:3px}
-.kpi .sb{font-size:12px;color:var(--text3);margin-top:7px}
-.kpi .sb b{color:var(--text2)}
+.kpi .sb{font-size:12px;color:var(--text2);margin-top:7px}
+.kpi .sb b{color:var(--text)}
 
 /* ── 메인 탭 ── */
 .vtabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);
@@ -73,7 +75,7 @@ button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
 .vtab:hover:not(.on){color:var(--text2);background:var(--bg)}
 .vtab.on{background:var(--grad);color:#fff;box-shadow:0 3px 10px rgba(91,95,232,.28)}
 .view{display:none}.view.on{display:block}
-.kpi-prog{margin-top:12px;height:8px;border-radius:99px;background:var(--bg);overflow:hidden;position:relative}
+.kpi-prog{margin-top:12px;height:8px;border-radius:99px;background:#fff;overflow:hidden;position:relative}
 .kpi-prog>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#3182f6,#5fa2f8)}
 .kpi-prog .mark{position:absolute;top:-2px;width:2px;height:12px;background:var(--text3);border-radius:1px}
 
@@ -126,9 +128,11 @@ select.sort{font:inherit;font-size:13px;font-weight:600;color:var(--text2);
 .nobud{font-size:12px;color:var(--text3);font-style:italic;padding-top:12px;border-top:1px solid var(--line);margin-top:auto}
 
 /* ── 표 ── */
-table{width:100%;border-collapse:collapse}
-thead th{font-size:12px;font-weight:600;color:var(--text3);text-align:left;
-  padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+table{width:100%;border-collapse:separate;border-spacing:0}
+thead th{font-size:12px;font-weight:800;color:#3d49c4;text-align:left;
+  background:#eef0fe;padding:11px 12px;white-space:nowrap;letter-spacing:.2px}
+thead tr th:first-child{border-radius:10px 0 0 10px}
+thead tr th:last-child{border-radius:0 10px 10px 0}
 thead th.r{text-align:right}
 tbody td{padding:11px 12px;font-size:13.5px;border-bottom:1px solid var(--line)}
 tbody td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
@@ -216,7 +220,7 @@ tbody tr:hover{background:#fafbfc}
 
 <div class="topbar"><div class="topbar-in">
   <div class="brand">
-    <div class="brand-logo">R&D</div>
+    <div class="brand-logo"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 3.5-3.5 3.5 3.5L19 9"/></svg></div>
     <div>
       <h1>2026 연구비 집행 현황</h1>
       <div class="org">KIAPI 전략기획본부 · 과제 통합 모니터링</div>
