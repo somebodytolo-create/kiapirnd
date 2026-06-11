@@ -525,7 +525,7 @@ function renderGrid(){
     return `<button class="pcard" data-n="${name.replace(/"/g,'&quot;')}">
       <div class="pcard-top">
         <div><div class="pcard-name">${name}</div><div class="pcard-mgr">${p.manager||''}</div></div>
-        ${p.has_budget?`<div style="text-align:center">${ringSvg(p.rate_total,TOT_C)}<div style="font-size:10px;color:var(--text3);margin-top:2px">총 집행률</div></div>`:''}
+        ${p.has_budget?`<div style="text-align:center">${ringSvg(p.rate_total)}<div style="font-size:10px;color:var(--text3);margin-top:2px">총 집행률</div></div>`:''}
       </div>
       <div class="badges">
         <span class="bdg ${mCls}">${p.ministry||'기타'}</span>
