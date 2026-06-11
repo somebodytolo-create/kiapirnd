@@ -338,7 +338,7 @@ new Chart(rc, {
       tooltip:{callbacks:{label:c=>{
         const p=P[c.label];
         return ` 집행 ${mm(p.exec_direct)}백만 / 예산 ${mm(p.budget_direct)}백만 (${c.parsed.x}%)`;}}}},
-    scales:{ x:{grid:{color:'#f1f3f5'},ticks:{callback:v=>v+'%',font:{size:11}},max:Math.max(...withBud.map(([,p])=>p.rate_direct*100),+expPct)*1.15},
+    scales:{ x:{grid:{color:'#f1f3f5'},ticks:{callback:v=>Math.round(v)+'%',font:{size:11}},max:Math.ceil(Math.max(...withBud.map(([,p])=>p.rate_direct*100),+expPct)*1.15/5)*5},
       y:{grid:{display:false},ticks:{font:{size:11.5,weight:600},color:'#4e5968'}}}},
   plugins:[{id:'expLine',afterDraw(c){
     const x=c.scales.x.getPixelForValue(+expPct);
