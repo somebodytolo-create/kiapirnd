@@ -239,8 +239,8 @@ tbody tr:hover{background:#fafbfc}
 
   <div class="vtabs" id="vtabs">
     <button class="vtab on" data-v="overview">집행 개요</button>
-    <button class="vtab" data-v="rate">직접비 집행률</button>
     <button class="vtab" data-v="projects">과제 목록</button>
+    <button class="vtab" data-v="rate">직접비 집행률</button>
   </div>
 
   <div class="view on" id="view-overview">
@@ -494,13 +494,15 @@ document.getElementById('chips').addEventListener('click',e=>{
 });
 document.getElementById('sort').addEventListener('change',e=>{fSort=e.target.value;renderGrid();});
 
-function ringSvg(rate){
+const TOT_C='#3182f6', DIR_C='#7c5cf6';  // 총 집행률=파랑, 직접비 집행률=보라
+function ringSvg(rate, color){
+  const col=color||rcol(rate);
   const r=23, c=2*Math.PI*r, d=c*Math.min(rate,1);
   return `<div class="ring"><svg width="54" height="54" viewBox="0 0 54 54">
     <circle cx="27" cy="27" r="${r}" fill="none" stroke="#f1f3f5" stroke-width="5"/>
-    <circle cx="27" cy="27" r="${r}" fill="none" stroke="${rcol(rate)}" stroke-width="5"
+    <circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}" stroke-width="5"
       stroke-dasharray="${d.toFixed(1)} ${c.toFixed(1)}" stroke-linecap="round"/></svg>
-    <span class="rv" style="color:${rcol(rate)}">${Math.round(rate*100)}%</span></div>`;
+    <span class="rv" style="color:${col}">${Math.round(rate*100)}%</span></div>`;
 }
 
 function renderGrid(){
@@ -518,12 +520,12 @@ function renderGrid(){
       <div class="pcard-nums">
         <div><div class="l">총 예산</div><div class="v">${mm(p.budget_total)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
         <div><div class="l">집행</div><div class="v">${mm(p.exec_total)}<span style="font-size:11px;font-weight:500;color:var(--text3)">백만</span></div></div>
-        <div><div class="l">직접비 집행률</div><div class="v" style="color:${rcol(p.rate_direct)}">${pct(p.rate_direct)}</div></div>
+        <div><div class="l">직접비 집행률</div><div class="v" style="color:${DIR_C}">${pct(p.rate_direct)}</div></div>
       </div>` : `<div class="nobud">예산 미입력</div>`;
     return `<button class="pcard" data-n="${name.replace(/"/g,'&quot;')}">
       <div class="pcard-top">
         <div><div class="pcard-name">${name}</div><div class="pcard-mgr">${p.manager||''}</div></div>
-        ${p.has_budget?`<div style="text-align:center">${ringSvg(p.rate_total)}<div style="font-size:10px;color:var(--text3);margin-top:2px">총 집행률</div></div>`:''}
+        ${p.has_budget?`<div style="text-align:center">${ringSvg(p.rate_total,TOT_C)}<div style="font-size:10px;color:var(--text3);margin-top:2px">총 집행률</div></div>`:''}
       </div>
       <div class="badges">
         <span class="bdg ${mCls}">${p.ministry||'기타'}</span>
@@ -562,9 +564,9 @@ function openModal(name){
   document.getElementById('t1').innerHTML=`
     <div class="sumrow">
       <div class="sumbox"><div class="v">${mm(p.budget_total)}<span style="font-size:12px;color:var(--text3)"> 백만</span></div><div class="l">총 연구비</div></div>
-      <div class="sumbox"><div class="v" style="color:${rcol(p.rate_total)}">${pct(p.rate_total)}</div><div class="l">총 집행률</div></div>
+      <div class="sumbox"><div class="v" style="color:${TOT_C}">${pct(p.rate_total)}</div><div class="l">총 집행률</div></div>
       <div class="sumbox"><div class="v">${mm(p.exec_direct)}<span style="font-size:12px;color:var(--text3)"> 백만</span></div><div class="l">직접비 집행</div></div>
-      <div class="sumbox"><div class="v" style="color:${rcol(p.rate_direct)}">${pct(p.rate_direct)}</div><div class="l">직접비 집행률</div></div>
+      <div class="sumbox"><div class="v" style="color:${DIR_C}">${pct(p.rate_direct)}</div><div class="l">직접비 집행률</div></div>
     </div>
     <div class="itgrid">${items}</div>
     <div style="text-align:center;font-size:12px;color:var(--text3);margin-top:14px">
