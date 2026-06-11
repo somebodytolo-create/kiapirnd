@@ -243,6 +243,16 @@ tbody tr:hover{background:#fafbfc}
   </div>
 
   <div class="card">
+    <h2>연구수당 지급 요건 현황</h2>
+    <div class="desc">직접비 80% 이상 소진 시 연구수당 지급 가능 · 단위: 백만원</div>
+    <div style="overflow-x:auto"><table id="allow-table">
+      <thead><tr><th>과제</th><th class="r">직접비 예산</th><th class="r">집행액</th>
+        <th style="width:30%">집행률 (80% 기준)</th><th class="r">80%까지 필요 집행액</th><th>상태</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
     <h2>과제 목록</h2>
     <div class="desc">카드를 클릭하면 상세 집행 내역을 볼 수 있습니다</div>
     <div class="toolbar">
@@ -325,7 +335,7 @@ document.getElementById('kpis').innerHTML = `
 const withBud = Object.entries(P).filter(([,p])=>p.has_budget)
   .sort((a,b)=>b[1].rate_direct-a[1].rate_direct);
 document.getElementById('rate-desc').textContent =
-  '집행률 높은 순 · 회색 세로 마커 = 과제별 협약기간 기준 경과율';
+  '집행률 높은 순 · 회색 세로 마커 = 협약기간 경과율 · 보라 점선 = 연구수당 지급 기준(직접비 80%)';
 const rc = document.getElementById('rateChart');
 rc.parentElement.style.height = Math.max(withBud.length*30+50, 200)+'px';
 const elVals = withBud.map(([,p])=>p.elapsed==null?NaN:+(p.elapsed*100).toFixed(1));
@@ -340,15 +350,42 @@ new Chart(rc, {
         pointStyle:'line', rotation:90, radius:10, hoverRadius:11,
         borderColor:'#8b95a1', borderWidth:2.5, pointBorderColor:'#8b95a1' }]},
   options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    layout:{padding:{top:16}},
     plugins:{ legend:{display:false},
       tooltip:{filter:c=>c.datasetIndex===0, callbacks:{label:c=>{
         const p=P[c.label];
         const el=p.elapsed==null?'':` · 경과율 ${(p.elapsed*100).toFixed(1)}%`;
         return ` 집행 ${mm(p.exec_direct)}백만 / 예산 ${mm(p.budget_direct)}백만 (${c.parsed.x}%)${el}`;}}}},
     scales:{ x:{grid:{color:'#f1f3f5'},ticks:{callback:v=>Math.round(v)+'%',font:{size:11}},
-        max:Math.ceil(Math.max(...withBud.map(([,p])=>p.rate_direct*100),...elVals.filter(v=>!isNaN(v)),10)*1.15/5)*5},
-      y:{grid:{display:false},ticks:{font:{size:11.5,weight:600},color:'#4e5968'}}}}
+        max:Math.max(85, Math.ceil(Math.max(...withBud.map(([,p])=>p.rate_direct*100),...elVals.filter(v=>!isNaN(v)),10)*1.15/5)*5)},
+      y:{grid:{display:false},ticks:{font:{size:11.5,weight:600},color:'#4e5968'}}}},
+  plugins:[{id:'allow80',afterDraw(c){
+    const x=c.scales.x.getPixelForValue(80), ctx=c.ctx;
+    ctx.save();ctx.setLineDash([5,4]);ctx.strokeStyle='#7c5cf6';ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(x,c.chartArea.top);ctx.lineTo(x,c.chartArea.bottom);ctx.stroke();
+    ctx.setLineDash([]);ctx.font='700 11px Pretendard,sans-serif';ctx.fillStyle='#7c5cf6';
+    ctx.textAlign='center';ctx.fillText('연구수당 80%',x,c.chartArea.top-5);ctx.restore();}}]
 });
+
+/* ── 연구수당 지급 요건 표 ── */
+document.querySelector('#allow-table tbody').innerHTML = withBud.map(([name,p])=>{
+  const ok = p.rate_direct>=0.8;
+  const need = Math.max(0, 0.8*p.budget_direct - p.exec_direct);
+  const w = Math.min(p.rate_direct/0.8*100, 100);  // 80%를 만점으로 한 진행도
+  const stat = ok
+    ? '<span class="bdg" style="background:var(--green-bg);color:#00805a">지급 가능</span>'
+    : '<span class="bdg" style="background:#f1f3f5;color:var(--text3)">미달</span>';
+  return `<tr>
+    <td style="font-weight:600">${name}</td>
+    <td class="r">${mm(p.budget_direct)}</td>
+    <td class="r">${mm(p.exec_direct)}</td>
+    <td><div style="display:flex;align-items:center;gap:8px">
+      <div style="flex:1;height:8px;border-radius:99px;background:var(--bg);overflow:hidden">
+        <i style="display:block;height:100%;border-radius:99px;width:${w.toFixed(1)}%;background:${ok?'#00a86b':'#7c5cf6'}"></i></div>
+      <span style="font-size:12px;font-weight:700;color:${ok?'#00805a':'var(--text2)'};min-width:42px;text-align:right">${pct(p.rate_direct)}</span></div></td>
+    <td class="r" style="color:${ok?'#00805a':'var(--text)'}">${ok?'-':mm(need)}</td>
+    <td>${stat}</td></tr>`;
+}).join('');
 
 /* ── 부처별 도넛 (파스텔 톤) ── */
 const MIN_SOFT = {'산업부':'#8fb5f3','과기부':'#7fcfae','국토부':'#f3d292','경찰청':'#f2a8b1'};
@@ -450,6 +487,7 @@ function renderGrid(){
       <div class="badges">
         <span class="bdg ${mCls}">${p.ministry||'기타'}</span>
         <span class="bdg t">${p.type||'-'}</span>
+        ${p.has_budget&&p.rate_direct>=0.8?'<span class="bdg" style="background:var(--green-bg);color:#00805a">연구수당 ✓</span>':''}
       </div>
       ${body}</button>`;
   }).join('');
@@ -488,7 +526,10 @@ function openModal(name){
     </div>
     <div class="itgrid">${items}</div>
     <div style="text-align:center;font-size:12px;color:var(--text3);margin-top:14px">
-      총 집행률(간접비 포함) ${pct(p.rate_total)} · 직접비 잔액 ${mm(p.budget_direct-p.exec_direct)}백만원${p.elapsed!=null?` · 협약기간 경과율 ${pct(p.elapsed)}`:''}</div>`;
+      총 집행률(간접비 포함) ${pct(p.rate_total)} · 직접비 잔액 ${mm(p.budget_direct-p.exec_direct)}백만원${p.elapsed!=null?` · 협약기간 경과율 ${pct(p.elapsed)}`:''}</div>
+    ${p.has_budget?(p.rate_direct>=0.8
+      ?'<div style="text-align:center;font-size:12.5px;font-weight:700;color:#00805a;margin-top:8px">✓ 연구수당 지급 요건 충족 (직접비 80% 이상 집행)</div>'
+      :`<div style="text-align:center;font-size:12.5px;color:#7c5cf6;font-weight:600;margin-top:8px">연구수당 지급 기준(직접비 80%)까지 ${mm(Math.max(0,0.8*p.budget_direct-p.exec_direct))}백만원 추가 집행 필요</div>`):''}`;
 
   // Tab2: 상세내역
   const sec=(title,rows)=>{
