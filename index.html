@@ -563,8 +563,9 @@ function openModal(name){
      <span>담당 <b>${p.manager||'-'}</b></span>
      <span>${p.host||''}</span><span>${p.period||''}</span>`;
 
-  // Tab1: 집행현황
-  const items = p.items.length ? p.items.map(it=>{
+  // Tab1: 집행현황 (예산 0원 비목은 숨김, 단 집행이 있으면 표시)
+  const visItems = p.items.filter(it=>it.budget>0||it.exec>0);
+  const items = visItems.length ? visItems.map(it=>{
     const c=rcol(it.rate), w=Math.min(it.rate*100,100).toFixed(1);
     return `<div class="itcard"><div class="n">${it.name}</div>
       <div class="nums"><span style="color:var(--text3)">예산 ${tk(it.budget)}천원</span>
