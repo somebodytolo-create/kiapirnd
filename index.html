@@ -76,6 +76,28 @@ button{font:inherit;border:0;background:none;cursor:pointer;color:inherit}
 .vtab:hover:not(.on){color:var(--text2);background:var(--bg)}
 .vtab.on{background:var(--grad);color:#fff;box-shadow:0 3px 10px rgba(91,95,232,.28)}
 .view{display:none}.view.on{display:block}
+/* ── 회의비 관리 ── */
+.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.mt-k{background:var(--accent-bg);border:1px solid #dfe2fc;border-radius:13px;padding:13px 15px}
+.mt-k span{display:block;font-size:12px;color:var(--text2);font-weight:700;margin-bottom:5px}
+.mt-k b{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
+.mt-table{border-collapse:collapse;font-size:12.5px;min-width:1080px}
+.mt-table th,.mt-table td{border-bottom:1px solid var(--line);padding:5px 7px;white-space:nowrap}
+.mt-table th{background:var(--bg);font-weight:800;color:var(--text2);font-size:11.5px;position:sticky;top:0;z-index:1}
+.mt-table th.r,.mt-table td.r{text-align:right;font-variant-numeric:tabular-nums}
+.mt-table .sticky{position:sticky;left:0;background:var(--card);z-index:2;font-weight:700;min-width:148px;box-shadow:1px 0 0 var(--line)}
+.mt-table th.sticky{z-index:4}
+.mt-table .nm{font-size:12px;color:var(--text)}
+.mt-table .b{font-weight:800}
+.mt-table .neg{color:var(--red)}
+.mt-table tfoot td{border-top:2px solid var(--text);background:var(--bg);font-weight:800}
+.mt-table tfoot .sticky{background:var(--bg);z-index:3}
+.mt-in{width:74px;border:1px solid transparent;border-radius:6px;padding:5px 6px;font:inherit;font-size:12px;
+  text-align:right;background:none;color:var(--text);font-variant-numeric:tabular-nums}
+.mt-in:hover{border-color:var(--line)}
+.mt-in:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 2px var(--accent-bg)}
+.mt-reset{font-size:12.5px;color:var(--text3);border:1px solid var(--line);border-radius:9px;padding:8px 14px;font-weight:700}
+.mt-reset:hover{color:var(--red);border-color:var(--red);background:var(--red-bg)}
 .kpi-prog{margin-top:12px;height:8px;border-radius:99px;background:#fff;overflow:hidden;position:relative}
 .kpi-prog>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#3182f6,#5fa2f8)}
 .kpi-prog .mark{position:absolute;top:-2px;width:2px;height:12px;background:var(--text3);border-radius:1px}
@@ -244,6 +266,7 @@ tbody tr:hover{background:#fafbfc}
     <button class="vtab on" data-v="overview">집행 개요</button>
     <button class="vtab" data-v="projects">과제 목록</button>
     <button class="vtab" data-v="rate">직접비 집행률</button>
+    <button class="vtab" data-v="meeting">회의비 관리</button>
   </div>
 
   <div class="view on" id="view-overview">
@@ -300,6 +323,16 @@ tbody tr:hover{background:#fafbfc}
       </select>
     </div>
     <div class="proj-grid" id="grid"></div>
+  </div>
+  </div>
+
+  <div class="view" id="view-meeting">
+  <div class="card">
+    <h2>과제별 회의비 관리<span class="unit-tag">단위: 원 · 2026년</span></h2>
+    <div class="desc">월별 회의비 집행액을 직접 입력하세요. 입력값은 <b>이 브라우저에만 저장</b>됩니다(대시보드 자동 갱신과 무관). 예산은 과제 엑셀의 회의비(연구활동비 세목) 기준입니다.</div>
+    <div class="mt-kpis" id="mt-kpis"></div>
+    <div style="overflow-x:auto"><table class="mt-table" id="mt-table"></table></div>
+    <div style="margin-top:14px"><button class="mt-reset" id="mt-reset">입력 초기화</button></div>
   </div>
   </div>
 
@@ -379,6 +412,54 @@ document.getElementById('vtabs').addEventListener('click',e=>{
   document.querySelectorAll('.vtab').forEach(t=>t.classList.toggle('on',t===b));
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='view-'+b.dataset.v));
 });
+
+/* ── 회의비 관리 (월별 직접입력, localStorage) ── */
+const MKEY='kiapirnd_meeting_2026';
+const MONTHS=[1,2,3,4,5,6,7,8,9,10,11,12];
+let MDATA=(()=>{try{return JSON.parse(localStorage.getItem(MKEY))||{}}catch(e){return{}}})();
+const mSave=()=>localStorage.setItem(MKEY,JSON.stringify(MDATA));
+const won=n=>(Math.round(n)||0).toLocaleString('ko-KR');
+function mBudget(name){const p=P[name];if(!p)return 0;const a=(p.detail_act||[]).find(x=>x.name==='회의비');return a?a.budget:0;}
+function renderMeeting(){
+  const names=Object.keys(P);
+  let h='<thead><tr><th class="sticky">과제</th><th class="r">회의비 예산</th>'
+    +MONTHS.map(m=>`<th class="r">${m}월</th>`).join('')
+    +'<th class="r">집행계</th><th class="r">잔액</th><th class="r">집행률</th></tr></thead><tbody>';
+  const colSum=Array(12).fill(0); let totBudget=0,totExec=0;
+  names.forEach(name=>{
+    const row=MDATA[name]||{}; const bud=mBudget(name); totBudget+=bud;
+    let rexec=0;
+    const cells=MONTHS.map((m,i)=>{const v=+row[m]||0; rexec+=v; colSum[i]+=v;
+      return `<td><input class="mt-in" data-p="${encodeURIComponent(name)}" data-m="${m}" value="${v?won(v):''}" inputmode="numeric"></td>`;}).join('');
+    totExec+=rexec;
+    const rem=bud-rexec, rate=bud>0?rexec/bud:0;
+    h+=`<tr><td class="sticky nm">${name}</td><td class="r b">${bud?won(bud):'-'}</td>${cells}`
+      +`<td class="r b">${rexec?won(rexec):'-'}</td><td class="r ${rem<0?'neg':''}">${bud?won(rem):'-'}</td>`
+      +`<td class="r">${bud>0?(rate*100).toFixed(0)+'%':'-'}</td></tr>`;
+  });
+  h+='</tbody><tfoot><tr><td class="sticky">합계</td><td class="r b">'+won(totBudget)+'</td>'
+    +colSum.map(s=>`<td class="r b">${s?won(s):'-'}</td>`).join('')
+    +`<td class="r b">${won(totExec)}</td><td class="r ${totBudget-totExec<0?'neg':''}">${won(totBudget-totExec)}</td>`
+    +`<td class="r">${totBudget>0?(totExec/totBudget*100).toFixed(0)+'%':'-'}</td></tr></tfoot>`;
+  document.getElementById('mt-table').innerHTML=h;
+  document.getElementById('mt-kpis').innerHTML=
+    `<div class="mt-k"><span>총 회의비 예산</span><b>${won(totBudget)}</b></div>`
+   +`<div class="mt-k"><span>총 집행(입력)</span><b>${won(totExec)}</b></div>`
+   +`<div class="mt-k"><span>잔액</span><b>${won(totBudget-totExec)}</b></div>`
+   +`<div class="mt-k"><span>집행률</span><b>${totBudget>0?(totExec/totBudget*100).toFixed(1)+'%':'-'}</b></div>`;
+}
+document.getElementById('mt-table').addEventListener('change',e=>{
+  const inp=e.target.closest('.mt-in'); if(!inp)return;
+  const name=decodeURIComponent(inp.dataset.p), m=inp.dataset.m;
+  const val=parseInt(String(inp.value).replace(/[^0-9]/g,''))||0;
+  if(!MDATA[name])MDATA[name]={};
+  if(val)MDATA[name][m]=val; else delete MDATA[name][m];
+  mSave(); renderMeeting();
+});
+document.getElementById('mt-reset').addEventListener('click',()=>{
+  if(confirm('입력한 회의비 데이터를 모두 지웁니다. 계속할까요?')){MDATA={};mSave();renderMeeting();}
+});
+renderMeeting();
 
 /* ── 과제별 집행률 차트 ── */
 const withBud = Object.entries(P).filter(([,p])=>p.has_budget)
