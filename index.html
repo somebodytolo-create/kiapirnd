@@ -676,7 +676,8 @@ function openModal(name){
     if(!rows.length) return `<div class="sec-t">${title}</div><div class="empty">집행 내역 없음</div>`;
     return `<div class="sec-t">${title}</div>`+rows.map(r=>{
       const over=r.exec>r.budget;
-      const c=rcol(r.rate), w=Math.max(0,Math.min(Math.abs(r.rate)*100,100)).toFixed(1);
+      // 상세내역에서 빨강은 예산 초과 전용 — 저집행(10% 미만)은 중립 회색
+      const c=(!over&&r.rate<.1)?'var(--text3)':rcol(r.rate), w=Math.max(0,Math.min(Math.abs(r.rate)*100,100)).toFixed(1);
       const rem=tk(r.budget-r.exec)+'천원';
       return `<div class="drow${over?' over':''}">
         <div><div class="n">${r.name}${over?'<span class="ovbdg">예산 초과</span>':''}</div><div class="s">예산 ${tk(r.budget)}천원 · 잔액 ${over?`<b>${rem}</b>`:rem}</div></div>
