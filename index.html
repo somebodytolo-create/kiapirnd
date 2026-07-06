@@ -203,6 +203,10 @@ tbody tr:hover{background:#fafbfc}
 .dtrack>i{display:block;height:100%;border-radius:99px}
 .dval{font-size:12.5px;font-weight:700;text-align:right}
 .dval .p{font-size:11px;color:var(--text3);font-weight:600}
+.drow.over{background:var(--red-bg);border-radius:10px;padding:9px 12px;border-bottom:0;margin:2px 0}
+.drow.over .s b{color:var(--red);font-weight:700}
+.drow.over .dval .p{color:var(--red)}
+.ovbdg{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;background:var(--red);color:#fff;font-size:10px;font-weight:700;vertical-align:1px}
 .acc{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;overflow:hidden;background:var(--card)}
 .acc-h{width:100%;display:flex;justify-content:space-between;align-items:center;
   padding:13px 16px;font-size:13.5px;font-weight:700;text-align:left}
@@ -672,9 +676,11 @@ function openModal(name){
   const sec=(title,rows)=>{
     if(!rows.length) return `<div class="sec-t">${title}</div><div class="empty">집행 내역 없음</div>`;
     return `<div class="sec-t">${title}</div>`+rows.map(r=>{
-      const c=rcol(r.rate), w=Math.max(0,Math.min(Math.abs(r.rate)*100,100)).toFixed(1);
-      return `<div class="drow">
-        <div><div class="n">${r.name}</div><div class="s">예산 ${tk(r.budget)}천원 · 잔액 ${tk(r.budget-r.exec)}천원</div></div>
+      const over=r.exec>r.budget;
+      const c=over?'var(--red)':rcol(r.rate), w=Math.max(0,Math.min(Math.abs(r.rate)*100,100)).toFixed(1);
+      const rem=tk(r.budget-r.exec)+'천원';
+      return `<div class="drow${over?' over':''}">
+        <div><div class="n">${r.name}${over?'<span class="ovbdg">예산 초과</span>':''}</div><div class="s">예산 ${tk(r.budget)}천원 · 잔액 ${over?`<b>${rem}</b>`:rem}</div></div>
         <div class="dtrack"><i style="width:${w}%;background:${c}"></i></div>
         <div class="dval" style="color:${c}">집행 ${tk(r.exec)}천원<br><span class="p">${pct(r.rate)}</span></div></div>`;
     }).join('');
