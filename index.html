@@ -649,7 +649,7 @@ function openModal(name){
   const visItems = p.items.filter(it=>it.budget>0||it.exec>0);
   const items = visItems.length ? visItems.map(it=>{
     const c=rcol(it.rate), w=Math.min(it.rate*100,100).toFixed(1);
-    return `<div class="itcard"><div class="n">${it.name}</div>
+    return `<div class="itcard"><div class="n">${it.name}${name==='(과)원격지원'&&it.name==='장비비'?' <span style="font-weight:500;color:var(--text3)">(이월금)</span>':''}</div>
       <div class="nums"><span style="color:var(--text3)">예산 ${tk(it.budget)}천원</span>
         <span style="font-weight:700">집행 ${tk(it.exec)}천원</span>
         <span style="font-weight:800;color:${c}">${pct(it.rate)}</span></div>
