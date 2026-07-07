@@ -641,7 +641,7 @@ function openModal(name){
   document.getElementById('m-meta').innerHTML=
     `<span class="bdg m-${MIN_COLOR[p.ministry]?p.ministry:'기타'}">${p.ministry||'기타'}</span>
      <span class="bdg t${p.type==='주관'?' lead':''}">${p.type||'-'}</span>
-     <span>책임자 <b>${p.pi||'-'}</b></span>
+     <span>책임자 <b${p.type==='주관'?' style="color:#5b3fd4" title="주관과제 연구책임자 — 3책5공(책임자 3과제 제한) 대상"':''}>${p.pi||'-'}</b></span>
      <span>담당 <b>${p.manager||'-'}</b></span>
      <span>${p.host||''}</span><span>${p.period||''}</span>`;
 
