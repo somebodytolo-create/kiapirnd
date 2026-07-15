@@ -225,6 +225,10 @@ tbody tr:hover{background:#fafbfc}
 .empty{text-align:center;color:var(--text3);font-size:13px;padding:28px 0}
 
 .footer{text-align:center;font-size:12px;color:var(--text3);padding:10px 0 0}
+.byname{font-weight:600}
+@supports(-webkit-background-clip:text){.byname{background:linear-gradient(100deg,var(--text3) 42%,var(--accent2) 50%,var(--text3) 58%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:byshine 6s ease-in-out infinite}}
+@keyframes byshine{0%{background-position:120% 0}55%,100%{background-position:-20% 0}}
+@media(prefers-reduced-motion:reduce){.byname{animation:none}}
 
 @media(max-width:980px){
   .kpis{grid-template-columns:repeat(2,1fr)}
@@ -344,7 +348,7 @@ tbody tr:hover{background:#fafbfc}
   </div>
 
   <div class="footer">본 대시보드는 과제별 Excel 파일에서 자동 생성됩니다 · 생성일 <span id="gen-date"></span>
-    <span style="margin-left:4px">· designed &amp; built by 유정</span></div>
+    <span style="margin-left:4px">· designed &amp; built by <span class="byname">유정</span></span></div>
 </div>
 
 <div class="ovl" id="ovl">
