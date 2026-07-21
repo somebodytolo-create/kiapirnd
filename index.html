@@ -255,6 +255,81 @@ tbody tr:hover{background:#fafbfc}
   .mt-scroll::after{content:'← 좌우로 밀어서 보세요 →';display:block;text-align:center;
     font-size:11px;color:var(--text3);padding:8px 0 2px}
 }
+
+
+/* ===== 하반기 전망(forecast) 탭 ===== */
+.fc-banner{background:#fff3cd;border:1px solid #f0d98a;color:#8a6500;border-radius:12px;padding:10px 15px;font-size:12.5px;font-weight:600;margin-bottom:18px;display:flex;gap:8px;align-items:center;line-height:1.5}
+.vtab .new{font-size:9.5px;font-weight:800;background:#fff;color:var(--accent);border-radius:99px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.lt-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.lt-box{border-radius:14px;padding:15px 16px;display:flex;align-items:center;gap:14px;border:1px solid}
+.lt-box.ok{background:var(--green-bg);border-color:#bfe8d5}
+.lt-box.warn{background:var(--amber-bg);border-color:#f4dfa8}
+.lt-box.risk{background:var(--red-bg);border-color:#f6c4ca}
+.lt-box .num{font-size:26px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.lt-box.ok .num{color:#00805a}.lt-box.warn .num{color:#b97509}.lt-box.risk .num{color:#d62939}
+.lt-box .tx b{font-size:13.5px;font-weight:800;display:block}
+.lt-box .tx span{font-size:11.5px;color:var(--text2)}
+.lt-box.ok .tx b{color:#00805a}.lt-box.warn .tx b{color:#b97509}.lt-box.risk .tx b{color:#d62939}
+.expl{background:var(--accent-bg);border:1px solid #dfe2fc;border-radius:14px;padding:15px 17px;font-size:12.5px;color:var(--text2);line-height:1.65;margin-bottom:18px}
+.expl b{color:var(--text);font-weight:700}
+.expl .grades{display:flex;gap:18px;flex-wrap:wrap;margin:9px 0 2px}
+.expl .grades span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text)}
+.expl .g{width:9px;height:9px;border-radius:50%;flex:none}
+.expl .g.ok{background:var(--green)}.expl .g.warn{background:var(--amber)}.expl .g.risk{background:var(--red)}
+.expl .tip{margin-top:9px;font-size:11.5px;color:var(--text3);border-top:1px solid #dfe2fc;padding-top:9px}
+.expl-notes{margin-top:11px;border-top:1px solid #dfe2fc;padding-top:11px}
+.expl-notes .nh{font-size:11.5px;font-weight:800;color:var(--accent);margin-bottom:7px}
+.expl-notes ul{margin:0;padding-left:17px}
+.expl-notes li{margin:5px 0;font-size:11.5px;color:var(--text2);line-height:1.55}
+.expl-notes b{color:var(--text);font-weight:700}
+.expl-notes code{background:#fff;border:1px solid #dfe2fc;padding:1px 5px;border-radius:5px;font-size:11px}
+.expl-notes .hl{background:linear-gradient(180deg,transparent 8%,#ffe873 8% 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 3px;border-radius:2px;color:var(--text)}
+.expl-notes .hl b{color:var(--text)}
+#view-forecast .tscroll{overflow-x:auto}
+#fc-ptable{min-width:900px}
+#fc-ptable td{vertical-align:middle}
+#view-forecast .pname{font-weight:700}
+.fc-mini{display:inline-block;font-size:10.5px;color:var(--text3);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-right:6px;font-weight:700;vertical-align:1px}
+.tl{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.tl .d{width:7px;height:7px;border-radius:50%}
+.tl.ok{background:var(--green-bg);color:#00805a}.tl.ok .d{background:var(--green)}
+.tl.warn{background:var(--amber-bg);color:#b97509}.tl.warn .d{background:var(--amber)}
+.tl.risk{background:var(--red-bg);color:#d62939}.tl.risk .d{background:var(--red)}
+.subp{font-size:11px;color:var(--text3);font-weight:600;margin-top:2px}
+#fc-undtable{min-width:920px;table-layout:fixed}
+#fc-undtable th{vertical-align:bottom}
+#fc-undtable td{font-size:12.5px;white-space:normal;vertical-align:top;word-break:keep-all}
+#fc-undtable .und-item{font-weight:600;line-height:1.45}
+#fc-undtable .und-bigo{color:var(--text3);font-size:11.5px;line-height:1.45}
+#fc-undtable td.nowrap{white-space:nowrap}
+#fc-undtable td.r{white-space:nowrap}
+#fc-undtable tfoot td{border-top:2px solid var(--text2);background:var(--bg);font-weight:800;font-size:13px;vertical-align:middle;padding:11px 12px}
+.rcell{display:inline-flex;flex-direction:column;align-items:flex-end;gap:4px}
+.rtop{font-weight:800}.rtop.ok{color:#00805a}.rtop.warn{color:#b97509}.rtop.risk{color:#d62939}
+.drate{font-weight:800}.drate.good{color:#00805a}.drate.bad{color:var(--red)}
+.failtag{font-size:9.5px;background:var(--red-bg);color:#d62939;border-radius:99px;padding:1px 6px;font-weight:800;margin-left:5px;vertical-align:1px}
+.rbar{height:7px;border-radius:99px;background:var(--bg);overflow:hidden;width:120px;position:relative}
+.rbar>i{display:block;height:100%;border-radius:99px}
+.rbar>i.ok{background:var(--green)}.rbar>i.warn{background:var(--amber)}.rbar>i.risk{background:var(--red)}
+.rbar .ov{position:absolute;top:-1px;bottom:-1px;right:0;width:2px;background:var(--red)}
+.overtag{color:var(--red);font-weight:800;font-size:11.5px}
+#view-forecast .muted{color:var(--text3)}
+.flow{display:flex;flex-direction:column;gap:2px}
+.frow{display:grid;grid-template-columns:104px 1fr;gap:14px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:0}
+.fname{font-size:13px;font-weight:700}
+.fname small{display:block;color:var(--text3);font-weight:600;font-size:11px;margin-top:2px}
+.fbar{height:22px;border-radius:8px;overflow:hidden;display:flex;background:var(--bg)}
+.fbar>span{display:block;height:100%}
+.s-exec{background:var(--blue)}.s-plan{background:#9ec3fb}.s-auto{background:var(--green)}.s-idle{background:#d3dae2}
+.fmeta{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--text2);margin-top:7px}
+.fmeta b{color:var(--text);font-weight:700}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--text2);margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.legend .k{display:inline-flex;align-items:center;gap:6px}
+.legend .sw{width:12px;height:12px;border-radius:4px;display:inline-block}
+.sw.exec{background:var(--blue)}.sw.plan{background:#9ec3fb}.sw.auto{background:var(--green)}.sw.idle{background:#d3dae2}
+@media(max-width:980px){.lt-row{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -279,6 +354,7 @@ tbody tr:hover{background:#fafbfc}
     <button class="vtab" data-v="projects">과제 목록</button>
     <button class="vtab" data-v="rate">직접비 집행률</button>
     <button class="vtab" data-v="meeting">회의비 관리</button>
+    <button class="vtab" data-v="forecast">하반기 전망</button>
   </div>
 
   <div class="view on" id="view-overview">
@@ -344,6 +420,68 @@ tbody tr:hover{background:#fafbfc}
     <div class="desc">카드 결제 건은 대금이 익월에 이체되므로 <b>이체월이 아닌 지출일이 속한 달</b>에 반영되며, <b>지출결의가 등록된 건만 집계</b>되므로 결의 전 최근 지출은 아직 표시되지 않을 수 있습니다. 대시보드 갱신 시 자동 반영되며, 예산은 회의비 세목 기준입니다.</div>
     <div class="mt-kpis" id="mt-kpis"></div>
     <div class="mt-scroll" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="mt-table" id="mt-table"></table></div>
+  </div>
+  </div>
+
+
+  <div class="view" id="view-forecast">
+    <div class="kpis" id="fc-kpis"></div>
+    <div class="card">
+    <h2>과제별 최종 예상 집행률 · 예상 잔액</h2>
+    <div class="desc">현재 집행 누계 + 하반기 집행계획(팀 취합)으로 연말 집행을 전망합니다. 위험 → 정상 순 정렬. <b style="color:var(--red)">직접비는 80%를 반드시 넘어야 하며, 미달 과제는 별도 표시됩니다.</b></div>
+
+    <div class="lt-row" id="fc-lights"></div>
+
+    <div class="expl">
+      각 과제의 <b>최종 예상 집행률</b>(= 연말까지 집행할 것으로 예상되는 총액 ÷ 예산)을 기준으로 색을 나눕니다.
+      <div class="grades">
+        <span><i class="g ok"></i><b>정상</b> · 연말 90% 이상 집행</span>
+        <span><i class="g warn"></i><b>양호</b> · 80~90%</span>
+        <span><i class="g risk"></i><b>위험</b> · 80% 미만</span>
+      </div>
+      <div class="tip">※ 제출하신 하반기 집행계획 조사표를 기반으로 한 <b>연말 전망 기준</b>입니다. <b style="color:var(--accent)">인건비·연구수당·간접비는 연말 100% 집행으로 가정하였습니다.</b></div>
+      <div class="expl-notes">
+        <div class="nh">계산 기준 · 데이터 메모 (검토 포인트)</div>
+        <ul id="fc-notes"></ul>
+      </div>
+    </div>
+
+    <div class="tscroll"><table id="fc-ptable">
+      <thead><tr>
+        <th>상태</th><th>과제</th>
+        <th class="r">예산</th><th class="r">현재 집행</th><th class="r">하반기 계획</th>
+        <th class="r">최종 예상 집행</th><th class="r">직접비 집행률<br>(예상·80%↑)</th><th class="r">예상 잔액</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>비목별 잔여 예산 흐름</h2>
+    <div class="desc">전 과제 비목 합계. 각 막대는 해당 비목 예산의 100%이며, 집행 → 계획 → 자동집행 예정 → 미계획 잔여로 나뉩니다.</div>
+    <div class="flow" id="fc-flow"></div>
+    <div class="legend">
+      <span class="k"><span class="sw exec"></span>현재 집행</span>
+      <span class="k"><span class="sw plan"></span>하반기 계획(조사표)</span>
+      <span class="k"><span class="sw auto"></span>자동집행 예정 · 인건비·연구수당·간접비(연말 100%)</span>
+      <span class="k"><span class="sw idle"></span>미계획 잔여 · 실질 불용액</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>미귀속 하반기 계획 (과제 미정)<span class="unit-tag" id="fc-undtag"></span></h2>
+    <div class="desc">아직 특정 과제에 배정되지 않은 계획 항목입니다. “타 사업 예산 협의 후 진행 예정” 상태라 위 과제별 집계·신호등에는 포함되지 않았습니다.</div>
+    <div class="tscroll"><table id="fc-undtable">
+      <colgroup>
+        <col style="width:104px"><col style="width:78px"><col><col style="width:96px">
+        <col style="width:104px"><col style="width:70px"><col style="width:216px">
+      </colgroup>
+      <thead><tr>
+        <th>팀</th><th>세목</th><th>항목</th><th>집행 예정월</th><th class="r">예정금액</th><th>담당</th><th>비고</th>
+      </tr></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table></div>
   </div>
   </div>
 
@@ -715,6 +853,121 @@ document.querySelectorAll('.tab[data-t]').forEach(t=>t.addEventListener('click',
 document.getElementById('mdl-close').addEventListener('click',closeModal);
 ovl.addEventListener('click',e=>{if(e.target===ovl)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+
+
+<script>
+/* 하반기 전망 탭 (자동 주입 · IIFE 격리) */
+(function(){
+const D = {"generated": "2026-07-21", "projects": [{"name": "제조AI", "key": "(산)제조AI", "mini": "산", "budget": 3240000000, "exnow": 38562310, "plan": 178000000, "ratenow": 0.0119, "proj_exec": 441447310, "fin_rate": 0.1362, "unused": 2798552690, "light": "risk", "bd": 3088000000, "ed": 38562310, "dir_now": 0.0125, "dir_rate": 0.0937, "dir_ok": false}, {"name": "SDV보안평가센터", "key": "(산)SDV보안평가센터", "mini": "산", "budget": 7838193774, "exnow": 722344270, "plan": 243900000, "ratenow": 0.0922, "proj_exec": 1163212270, "fin_rate": 0.1484, "unused": 6674981504, "light": "risk", "bd": 7486193774, "ed": 370344270, "dir_now": 0.0495, "dir_rate": 0.1084, "dir_ok": false}, {"name": "휴머노이드안전", "key": "(산)휴머노이드안전", "mini": "산", "budget": 225000000, "exnow": 38247000, "plan": 20420000, "ratenow": 0.17, "proj_exec": 146590000, "fin_rate": 0.6515, "unused": 78410000, "light": "risk", "bd": 214330000, "ed": 38247000, "dir_now": 0.1784, "dir_rate": 0.6342, "dir_ok": false}, {"name": "초안전플랫폼", "key": "(산)초안전플랫폼", "mini": "산", "budget": 574933615, "exnow": 179342980, "plan": 55980000, "ratenow": 0.3119, "proj_exec": 390046980, "fin_rate": 0.6784, "unused": 184886635, "light": "risk", "bd": 548133615, "ed": 152542980, "dir_now": 0.2783, "dir_rate": 0.6627, "dir_ok": false}, {"name": "SBOM", "key": "(산)SBOM", "mini": "산", "budget": 170000000, "exnow": 31860200, "plan": 1500000, "ratenow": 0.1874, "proj_exec": 124834200, "fin_rate": 0.7343, "unused": 45165800, "light": "risk", "bd": 145350000, "ed": 31860200, "dir_now": 0.2192, "dir_rate": 0.6893, "dir_ok": false}, {"name": "강화학습", "key": "(과)강화학습", "mini": "과", "budget": 211300700, "exnow": 75393570, "plan": 26400000, "ratenow": 0.3568, "proj_exec": 163097570, "fin_rate": 0.7719, "unused": 48203130, "light": "risk", "bd": 182300700, "ed": 46393570, "dir_now": 0.2545, "dir_rate": 0.7356, "dir_ok": false}, {"name": "구동모터모듈", "key": "(산)구동모터모듈", "mini": "산", "budget": 116409671, "exnow": 46099900, "plan": 5500000, "ratenow": 0.396, "proj_exec": 90064900, "fin_rate": 0.7737, "unused": 26344771, "light": "risk", "bd": 99609671, "ed": 29299900, "dir_now": 0.2941, "dir_rate": 0.7355, "dir_ok": false}, {"name": "AAM인버터", "key": "(산)AAM인버터", "mini": "산", "budget": 139990895, "exnow": 72036956, "plan": 5700000, "ratenow": 0.5146, "proj_exec": 109455956, "fin_rate": 0.7819, "unused": 30534939, "light": "risk", "bd": 120530895, "ed": 52576956, "dir_now": 0.4362, "dir_rate": 0.7467, "dir_ok": false}, {"name": "시험표준", "key": "(산)시험표준", "mini": "산", "budget": 100063330, "exnow": 0, "plan": 15000000, "ratenow": 0.0, "proj_exec": 82650000, "fin_rate": 0.826, "unused": 17413330, "light": "warn", "bd": 86413330, "ed": 0, "dir_now": 0.0, "dir_rate": 0.7985, "dir_ok": false}, {"name": "인포테인먼트", "key": "(산)인포테인먼트", "mini": "산", "budget": 129000000, "exnow": 26411220, "plan": 10100000, "ratenow": 0.2047, "proj_exec": 107647220, "fin_rate": 0.8345, "unused": 21352780, "light": "warn", "bd": 110300000, "ed": 26411220, "dir_now": 0.2394, "dir_rate": 0.8064, "dir_ok": true}, {"name": "기능재구성", "key": "(산)기능재구성", "mini": "산", "budget": 314882265, "exnow": 133512095, "plan": 50380000, "ratenow": 0.424, "proj_exec": 262768095, "fin_rate": 0.8345, "unused": 52114170, "light": "warn", "bd": 272382265, "ed": 91012095, "dir_now": 0.3341, "dir_rate": 0.8087, "dir_ok": true}, {"name": "3Tier통합검증", "key": "(과)3Tier통합검증", "mini": "과", "budget": 564317468, "exnow": 249529224, "plan": 69422000, "ratenow": 0.4422, "proj_exec": 481376224, "fin_rate": 0.853, "unused": 82941244, "light": "warn", "bd": 485617468, "ed": 170829224, "dir_now": 0.3518, "dir_rate": 0.8292, "dir_ok": true}, {"name": "합성데이터", "key": "(산)합성데이터", "mini": "산", "budget": 355439750, "exnow": 177025210, "plan": 20000000, "ratenow": 0.498, "proj_exec": 307362210, "fin_rate": 0.8647, "unused": 48077540, "light": "warn", "bd": 304639750, "ed": 126225210, "dir_now": 0.4143, "dir_rate": 0.8422, "dir_ok": true}, {"name": "원격지원", "key": "(과)원격지원", "mini": "과", "budget": 488862003, "exnow": 190290880, "plan": 103170000, "ratenow": 0.3893, "proj_exec": 436996880, "fin_rate": 0.8939, "unused": 51865123, "light": "warn", "bd": 423562003, "ed": 124990880, "dir_now": 0.2951, "dir_rate": 0.8776, "dir_ok": true}, {"name": "T-Car", "key": "(산)T-Car", "mini": "산", "budget": 180000000, "exnow": 70133660, "plan": 50160000, "ratenow": 0.3896, "proj_exec": 163782660, "fin_rate": 0.9099, "unused": 16217340, "light": "ok", "bd": 153900000, "ed": 44033660, "dir_now": 0.2861, "dir_rate": 0.8946, "dir_ok": true}, {"name": "전기차안전성", "key": "(국)전기차안전성", "mini": "국", "budget": 200099581, "exnow": 0, "plan": 45650000, "ratenow": 0.0, "proj_exec": 182310000, "fin_rate": 0.9111, "unused": 17789581, "light": "ok", "bd": 171099581, "ed": 0, "dir_now": 0.0, "dir_rate": 0.896, "dir_ok": true}, {"name": "운전능력평가", "key": "(경)운전능력평가", "mini": "경", "budget": 250000000, "exnow": 105248700, "plan": 57411600, "ratenow": 0.421, "proj_exec": 229721300, "fin_rate": 0.9189, "unused": 20278700, "light": "ok", "bd": 213700000, "ed": 68948700, "dir_now": 0.3226, "dir_rate": 0.9051, "dir_ok": true}, {"name": "기능조합", "key": "(산)기능조합", "mini": "산", "budget": 197196940, "exnow": 84185656, "plan": 47210000, "ratenow": 0.4269, "proj_exec": 185510656, "fin_rate": 0.9407, "unused": 11686284, "light": "ok", "bd": 169696940, "ed": 56685656, "dir_now": 0.334, "dir_rate": 0.9311, "dir_ok": true}, {"name": "혼합현실", "key": "(산)혼합현실", "mini": "산", "budget": 101946690, "exnow": 41355510, "plan": 19000000, "ratenow": 0.4057, "proj_exec": 96439510, "fin_rate": 0.946, "unused": 5507180, "light": "ok", "bd": 87446690, "ed": 26855510, "dir_now": 0.3071, "dir_rate": 0.937, "dir_ok": true}, {"name": "인력양성", "key": "(산)인력양성", "mini": "산", "budget": 792000000, "exnow": 476589610, "plan": 80018000, "ratenow": 0.6018, "proj_exec": 765798610, "fin_rate": 0.9669, "unused": 26201390, "light": "ok", "bd": 720200000, "ed": 476589610, "dir_now": 0.6617, "dir_rate": 0.9636, "dir_ok": true}, {"name": "고성능플랫폼", "key": "(산)고성능플랫폼", "mini": "산", "budget": 300000000, "exnow": 0, "plan": 123500000, "ratenow": 0.0, "proj_exec": 293000000, "fin_rate": 0.9767, "unused": 7000000, "light": "ok", "bd": 256500000, "ed": 0, "dir_now": 0.0, "dir_rate": 0.9727, "dir_ok": true}, {"name": "사고재현", "key": "(경)사고재현", "mini": "경", "budget": 103069200, "exnow": 71306490, "plan": 5400000, "ratenow": 0.6918, "proj_exec": 100954490, "fin_rate": 0.9795, "unused": 2114710, "light": "ok", "bd": 88569200, "ed": 56806490, "dir_now": 0.6414, "dir_rate": 0.9761, "dir_ok": true}, {"name": "EV컨버전", "key": "(국)EV컨버전", "mini": "국", "budget": 403647940, "exnow": 229823215, "plan": 60000000, "ratenow": 0.5694, "proj_exec": 396267215, "fin_rate": 0.9817, "unused": 7380725, "light": "ok", "bd": 345647940, "ed": 171823215, "dir_now": 0.4971, "dir_rate": 0.9786, "dir_ok": true}, {"name": "AAM통합평가", "key": "(산)AAM통합평가", "mini": "산", "budget": 254157270, "exnow": 80459500, "plan": 104200000, "ratenow": 0.3166, "proj_exec": 254529500, "fin_rate": 1.0015, "unused": -372230, "light": "ok", "bd": 217557270, "ed": 43859500, "dir_now": 0.2016, "dir_rate": 1.0017, "dir_ok": true}], "summary": {"ok": 10, "warn": 6, "risk": 8}, "dir_fail": 9, "totals": {"budget": 17250511092, "proj_exec": 6975863756, "unused": 10274647336, "rate": 0.4044}, "bmok": [{"name": "인건비", "budget": 2971360000, "exec": 1391200000, "plan": 0, "remain": 1580160000}, {"name": "연구수당", "budget": 493954000, "exec": 0, "plan": 0, "remain": 493954000}, {"name": "재료비", "budget": 930509970, "exec": 85530160, "plan": 617373600, "remain": 227606210}, {"name": "연구활동비", "budget": 2876623982, "exec": 582996676, "plan": 916348000, "remain": 1377279306}, {"name": "장비비", "budget": 8719233140, "exec": 185171320, "plan": 31300000, "remain": 8502761820}, {"name": "간접비", "budget": 1258830000, "exec": 894860000, "plan": 0, "remain": 363970000}], "unmatched": ["미정"], "undecided": [{"team": "디지털플랫폼팀", "se": "연구활동비", "item": "D2X Device용 LTE 통신 요금", "month": "2026-10", "amt": 3000000, "who": "김태민", "bigo": "타 사업 예산 협의 후, 진행 예정"}, {"team": "디지털플랫폼팀", "se": "연구재료비", "item": "D2X 소형/저가형 모델 설계 용역", "month": "2026-10", "amt": 50000000, "who": "김태민", "bigo": "타 사업 예산 협의 후, 분할 진행 예정"}, {"team": "디지털플랫폼팀", "se": "연구재료비", "item": "Digital-PG WIFI 기반 신규 D2X 시제품 제작", "month": "2026-10", "amt": 50000000, "who": "김태민", "bigo": "타 사업 예산 협의 후, 분할 진행 예정"}, {"team": "디지털플랫폼팀", "se": "연구재료비", "item": "Digital-PG WIFI 기반 신규 D2X 시제품 제작", "month": "2026-10", "amt": 20000000, "who": "김태민", "bigo": "타 사업 예산 협의 후, 분할 진행 예정"}, {"team": "데이터엔지니어링팀", "se": "연구재료비", "item": "합성데이터-센서 하우징 용역 1차", "month": "2026-09", "amt": 22000000, "who": "우현", "bigo": "타 사업 예산 협의 필요(분할 : SBOM 15,000천원, 합성데이터 7,000천원)(예정)"}, {"team": "데이터엔지니어링팀", "se": "연구재료비", "item": "합성데이터-센서 하우징 용역 2차", "month": "2026-09", "amt": 22000000, "who": "우현", "bigo": "타 사업 예산 협의 필요"}], "undecided_total": 167000000, "plan_total": 1398021600};
+function money(n){const s=n<0?'-':'';const a=Math.abs(n);
+  if(a>=1e8) return s+(a/1e8).toFixed(2)+'억';
+  if(a===0) return '0';
+  return s+Math.round(a/1e4).toLocaleString('ko-KR')+'만';}
+const pct=r=>(r*100).toFixed(1)+'%';
+const LT={ok:'정상',warn:'양호',risk:'위험'};
+const AUTO=new Set(['인건비','연구수당','간접비']);
+const autoOf=b=>AUTO.has(b.name)?Math.max(0,b.remain):0;
+const idleOf=b=>AUTO.has(b.name)?0:Math.max(0,b.remain);
+
+
+// KPIs
+const k=D.totals;
+const ic={
+  won:'<path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  trend:'<path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-4 4"/>',
+  alert:'<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'
+};
+document.getElementById('fc-kpis').innerHTML=[
+  {kc:'var(--accent)',kbg:'var(--accent-bg)',i:ic.won,lb:'대상 과제 예산 합계',v:money(k.budget),u:'원',sb:'예산 0·미매칭 과제 제외 ('+D.projects.length+'개)'},
+  {kc:'var(--blue)',kbg:'var(--blue-bg)',i:ic.trend,lb:'최종 예상 집행 합계',v:money(k.proj_exec),u:'원',sb:'예상 집행률 <b>'+pct(k.rate)+'</b>',prog:k.rate},
+  {kc:'var(--amber)',kbg:'var(--amber-bg)',i:ic.alert,lb:'예상 잔액 합계',v:money(k.unused),u:'원',sb:'예산 − 최종 예상 집행'},
+  {kc:'var(--green)',kbg:'var(--green-bg)',i:ic.cal,lb:'하반기 계획 취합',v:money(D.plan_total),u:'원',sb:'재료·활동비 중심 106여 건'},
+].map(x=>`<div class="kpi" style="--kc:${x.kc};--kbg:${x.kbg}">
+  <div class="kpi-hd"><div class="kpi-ic"><svg viewBox="0 0 24 24">${x.i}</svg></div><div class="lb">${x.lb}</div></div>
+  <div class="vl tnum">${x.v}<span class="unit">${x.u}</span></div>
+  <div class="sb">${x.sb}</div>
+  ${x.prog!=null?`<div class="kpi-prog"><i style="width:${Math.min(x.prog,1)*100}%"></i></div>`:''}
+</div>`).join('');
+
+// lights
+const s=D.summary;
+document.getElementById('fc-lights').innerHTML=[
+  ['ok',s.ok,'정상','연말 90% 이상 집행'],
+  ['warn',s.warn,'양호','80~90% · 양호'],
+  ['risk',s.risk,'위험','80% 미만 · 불용 우려'],
+].map(([c,n,t,d])=>`<div class="lt-box ${c}"><div class="num tnum">${n}</div><div class="tx"><b>${t} ${n}개 과제</b><span>${d}</span></div></div>`).join('');
+
+// project table
+document.querySelector('#fc-ptable tbody').innerHTML=D.projects.map(p=>{
+  const w=Math.min(p.fin_rate,1)*100, over=p.fin_rate>1;
+  const unused=p.unused<0?`<span class="overtag">${money(p.unused)} 초과</span>`:`${money(p.unused)}`;
+  return `<tr>
+    <td><span class="tl ${p.light}"><span class="d"></span>${LT[p.light]}</span></td>
+    <td class="pname"><span class="fc-mini">${p.mini}</span>${p.name}</td>
+    <td class="r">${money(p.budget)}</td>
+    <td class="r">${money(p.exnow)}<div class="subp">${pct(p.ratenow)}</div></td>
+    <td class="r">${p.plan?money(p.plan):'<span class="muted">–</span>'}</td>
+    <td class="r"><span class="rcell"><span class="rtop ${p.light}">${pct(p.fin_rate)}</span>
+      <span class="rbar"><i class="${p.light}" style="width:${w}%"></i>${over?'<span class="ov"></span>':''}</span></span></td>
+    <td class="r"><span class="rcell"><span class="drate ${p.dir_ok?'good':'bad'}">${pct(p.dir_rate)}${p.dir_ok?'':'<span class="failtag">미달</span>'}</span>
+      <span class="subp">현재 ${pct(p.dir_now)}</span></span></td>
+    <td class="r">${unused}</td>
+  </tr>`;
+}).join('');
+
+// bmok flow bars
+document.getElementById('fc-flow').innerHTML=D.bmok.map(b=>{
+  const tot=b.budget||1;
+  const e=Math.max(0,b.exec)/tot*100, pl=Math.max(0,b.plan)/tot*100, au=autoOf(b)/tot*100, id=idleOf(b)/tot*100;
+  const parts=[`<span>집행 <b>${money(b.exec)}</b></span>`];
+  if(b.plan) parts.push(`<span>계획 <b>${money(b.plan)}</b></span>`);
+  if(autoOf(b)) parts.push(`<span>자동집행 예정 <b>${money(autoOf(b))}</b></span>`);
+  if(idleOf(b)) parts.push(`<span>미계획 잔여 <b>${money(idleOf(b))}</b></span>`);
+  return `<div class="frow">
+    <div class="fname">${b.name}<small>${money(b.budget)}원</small></div>
+    <div>
+      <div class="fbar">
+        <span class="s-exec" style="width:${e}%"></span>
+        <span class="s-plan" style="width:${pl}%"></span>
+        <span class="s-auto" style="width:${au}%"></span>
+        <span class="s-idle" style="width:${id}%"></span>
+      </div>
+      <div class="fmeta tnum">${parts.join('')}</div>
+    </div>
+  </div>`;
+}).join('');
+
+// 미정(미귀속) 내역
+const und=D.undecided||[];
+document.getElementById('fc-undtag').textContent=`${und.length}건 · ${money(D.undecided_total)}원`;
+document.querySelector('#fc-undtable tbody').innerHTML=und.map(u=>`<tr>
+  <td class="nowrap">${u.team}</td>
+  <td class="nowrap">${u.se}</td>
+  <td class="und-item">${u.item}</td>
+  <td class="nowrap">${u.month}</td>
+  <td class="r">${money(u.amt)}</td>
+  <td class="nowrap">${u.who}</td>
+  <td class="und-bigo">${u.bigo}</td>
+</tr>`).join('');
+document.querySelector('#fc-undtable tfoot').innerHTML=`<tr>
+  <td colspan="2"></td>
+  <td>합계 ${und.length}건</td>
+  <td></td>
+  <td class="r">${money(D.undecided_total)}</td>
+  <td colspan="2"></td>
+</tr>`;
+
+// notes
+document.getElementById('fc-notes').innerHTML=[
+  '<b>방식</b> — 인건비·연구수당·간접비는 연말 100% 집행으로 가정(담당자 확인). 재료·활동비는 <code>현재 집행 + 하반기 계획</code>.',
+  `<b>직접비 집행률(예상)</b> = (직접비 현재집행 + 하반기 계획 + 인건비·연구수당 자동집행) ÷ 직접비 예산. <b style="color:var(--red)">80% 미달 ${D.dir_fail}개 과제</b>는 “미달” 표시.`,
+  '<span class="hl"><b>SDV보안평가센터(예상 14.8%)·제조AI(13.6%)</b>는 예산 대부분이 센터 구축·장비 예산이라 집행률이 낮게 나옴(각 78.4억·32.4억, 위험).</span>',
+  '<b style="color:var(--red)">검토 필요</b> — AAM통합평가는 최종 예상 <b>총 집행률 100.2%(약 37만원 초과)</b>로 예산을 넘어설 전망 — 하반기 계획·집행 점검 필요.',
+].map(t=>`<li>${t}</li>`).join('');
+
+})();
 </script>
 </body>
 </html>
