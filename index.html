@@ -316,6 +316,8 @@ tbody tr:hover{background:#fafbfc}
 .pu{font-weight:700;color:var(--text2)}
 .subp .cut{color:#b97509;font-weight:700;border-bottom:1px dotted #e0c07a;cursor:help}
 .subp .chgok{color:#00805a;font-weight:700;border-bottom:1px dotted #a9d8c2;cursor:help}
+.fc-planfoot{margin-top:12px;padding-top:11px;border-top:1px solid var(--line);font-size:11px;color:var(--text3);line-height:1.7;word-break:keep-all}
+.fc-planfoot b{color:var(--text3);font-weight:700}
 .pbar{height:5px;border-radius:99px;background:var(--bg);overflow:hidden;width:78px}
 .pbar>i{display:block;height:100%;border-radius:99px;background:#9ec3fb}
 .overtag{color:var(--red);font-weight:800;font-size:11.5px}
@@ -460,6 +462,7 @@ tbody tr:hover{background:#fafbfc}
       </tr></thead>
       <tbody></tbody>
     </table></div>
+    <div class="fc-planfoot" id="fc-planfoot"></div>
   </div>
 
   <div class="card">
@@ -948,9 +951,11 @@ document.querySelector('#fc-undtable tfoot').innerHTML=`<tr>
 // notes (수치·과제는 조사표에서 자동 계산 — 하드코딩 금지)
 const won=n=>Math.round(n).toLocaleString('ko-KR');
 const eok=n=>(n/1e8).toFixed(1);
+
+// 표 하단 보조 설명(흐리게)
+document.getElementById('fc-planfoot').innerHTML=`※ <b>계획 소진 자동 차감</b> — 조사표 작성 시점(${D.base_date||'기준일'}) 이후 늘어난 비목별 집행은 계획을 실행한 것으로 보고 계획에서 자동으로 뺍니다. 같은 돈이 집행과 계획에 두 번 잡혀 집행률이 부풀지 않도록 한 처리이며, 조사표를 새로 반영하면 기준일도 자동으로 갱신됩니다. 현재 계획 ${eok(D.plan_total)}억 중 ${eok(D.plan_used_total||0)}억 소진 · ${eok(D.plan_left_total||0)}억 잔여.`;
 const notes=[
   `<b>방식</b> — 인건비·연구수당·간접비는 연말 100% 집행으로 가정(담당자 확인). 재료·활동·장비비는 <code>현재 집행 + 잔여 계획</code>.`,
-  `<b>계획 소진 자동 차감</b> — 조사표 작성 시점(<b>${D.base_date||'기준일'}</b>) 이후 늘어난 비목별 집행은 <b>계획을 실행한 것</b>으로 보고 계획에서 자동으로 뺍니다. 같은 돈이 집행과 계획에 두 번 잡혀 집행률이 부풀지 않도록 한 처리이며, 조사표를 새로 반영하면 기준일도 자동으로 갱신됩니다. 현재 계획 ${eok(D.plan_total)}억 중 <b>${eok(D.plan_used_total||0)}억 소진 · ${eok(D.plan_left_total||0)}억 잔여</b>.`,
   `<b>직접비 집행률(예상)</b> = (직접비 현재집행 + 잔여 계획 + 인건비·연구수당 자동집행) ÷ 직접비 예산. <b style="color:var(--red)">80% 미달 ${D.dir_fail}개 과제</b>는 “미달” 표시.`,
 ];
 const cuts=D.projects.filter(p=>p.plan_over>0).sort((a,b)=>b.plan_over-a.plan_over);
