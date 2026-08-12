@@ -259,8 +259,11 @@ tbody tr:hover{background:#fafbfc}
 /* ===== 과제 정보(단계·연차·기간) ===== */
 .pi-strip{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-.pi-stat{display:flex;align-items:baseline;gap:7px;padding-right:22px;border-right:1px solid var(--line)}
-.pi-stat:last-of-type{border-right:0}
+.pi-stat{display:flex;align-items:baseline;gap:7px;padding:7px 15px;border-radius:12px;
+  border:1px solid transparent;background:none;text-align:left;transition:all .16s}
+.pi-stat:hover{background:var(--bg)}
+.pi-stat.on{background:var(--accent-bg);border-color:#dfe2fc}
+.pi-stat.on .lb,.pi-stat.on .vl{color:var(--accent)}
 .pi-stat .lb{font-size:12.5px;color:var(--text3);font-weight:600}
 .pi-stat .vl{font-size:20px;font-weight:800;letter-spacing:-.4px;font-variant-numeric:tabular-nums}
 .pi-stat .un{font-size:12px;color:var(--text3);font-weight:600;margin-left:-3px}
@@ -890,20 +893,36 @@ const isSoon = m => m!==null && m>=0 && m<=6;
 (function(){
   const all = Object.entries(P);
   const endY = e => e ? +e.slice(0,4) : null;
+  const byEnd = (a,b)=>(a[1].end_date||'').localeCompare(b[1].end_date||'')
+                       || a[1].rate_direct-b[1].rate_direct;
   const closing = all.filter(([,p])=>endY(p.end_date)===THIS_YEAR)
                      .sort((a,b)=>a[1].rate_direct-b[1].rate_direct);
-  const within = all.filter(([,p])=>{const m=monthsLeft(p.end_date); return m!==null&&m>=0&&m<=12;});
-  const noPer  = all.filter(([,p])=>!p.end_date);
-  const stat=(lb,v)=>`<div class="pi-stat"><span class="lb">${lb}</span><span class="vl">${v}</span><span class="un">개</span></div>`;
-  const chips = closing.length
-    ? `<span class="hd">${THIS_YEAR}.12.31 종료</span>` + closing.map(([n,p])=>
-        `<button class="pi-chipp" data-n="${n.replace(/"/g,'&quot;')}" title="클릭하면 집행 상세가 열립니다">${n}<i>직접비 ${pct(p.rate_direct)}</i></button>`).join('')
-    : `<span class="pi-none">올해 종료 예정 과제 없음</span>`;
-  document.getElementById('pi-strip').innerHTML =
-    stat('올해 종료', closing.length) + stat('1년 이내 종료', within.length) +
-    stat('기간 미입력', noPer.length) +
-    `<div class="pi-soon">${chips}</div>`;
-  document.getElementById('pi-strip').addEventListener('click',e=>{
+  const within = all.filter(([,p])=>{const m=monthsLeft(p.end_date); return m!==null&&m>=0&&m<=12;})
+                    .sort(byEnd);
+  const G = {
+    year:{list:closing, hd:THIS_YEAR+'.12.31 종료', date:false, empty:'올해 종료 예정 과제 없음'},
+    m12: {list:within,  hd:'1년 이내 종료',          date:true,  empty:'1년 이내 종료 예정 과제 없음'}
+  };
+  let cur='year';
+  const strip = document.getElementById('pi-strip');
+  const stat=(k,lb,v)=>`<button class="pi-stat${k===cur?' on':''}" data-g="${k}">
+      <span class="lb">${lb}</span><span class="vl">${v}</span><span class="un">개</span></button>`;
+  function paint(){
+    const g=G[cur];
+    const chips = g.list.length
+      ? `<span class="hd">${g.hd}</span>` + g.list.map(([n,p])=>
+          `<button class="pi-chipp" data-n="${n.replace(/"/g,'&quot;')}" title="클릭하면 집행 상세가 열립니다">${n}`
+          + (g.date&&p.end_date?`<i>~${p.end_date.slice(2,7).replace('-','.')}</i>`:'')
+          + `<i>직접비 ${pct(p.rate_direct)}</i></button>`).join('')
+      : `<span class="pi-none">${g.empty}</span>`;
+    strip.innerHTML = stat('year','올해 종료',closing.length)
+                    + stat('m12','1년 이내 종료',within.length)
+                    + `<div class="pi-soon">${chips}</div>`;
+  }
+  paint();
+  strip.addEventListener('click',e=>{
+    const s=e.target.closest('.pi-stat');
+    if(s){ if(s.dataset.g!==cur){ cur=s.dataset.g; paint(); } return; }
     const b=e.target.closest('.pi-chipp'); if(b) openModal(b.dataset.n);
   });
 })();
