@@ -275,7 +275,8 @@ tbody tr:hover{background:#fafbfc}
 .pi-chipp:hover{border-color:#d2d8de;color:var(--text)}
 .pi-chipp i{font-style:normal;font-weight:700;margin-left:7px;color:var(--text3);
   font-variant-numeric:tabular-nums}
-.pi-chipp.more{background:none;border-style:dashed;color:var(--accent)}
+.pi-chipp.more{background:none;border-style:dashed;color:var(--accent);
+  white-space:nowrap;align-self:center;font-weight:800}
 .pi-chipp.more:hover{background:var(--accent-bg);border-color:#dfe2fc;color:var(--accent)}
 .pi-none{font-size:12.5px;color:var(--text3)}
 /* 과제 목록 탭의 .chip 핸들러가 전역 querySelectorAll('.chip')을 쓰므로 클래스 분리 */
@@ -907,23 +908,23 @@ const isSoon = m => m!==null && m>=0 && m<=6;
     year:{list:closing, hd:THIS_YEAR+'.12.31 종료', date:false, empty:'올해 종료 예정 과제 없음'},
     next:{list:nextY,   hd:NEXT_YEAR+'년 종료',     date:true,  empty:NEXT_YEAR+'년 종료 예정 과제 없음'}
   };
-  const MAX_CHIP = 6;
   let cur='year';
   const strip = document.getElementById('pi-strip');
   const stat=(k,lb,v)=>`<button class="pi-stat${k===cur?' on':''}" data-g="${k}">
       <span class="lb">${lb}</span><span class="vl">${v}</span><span class="un">개</span></button>`;
   function paint(){
-    const g=G[cur], shown=g.list.slice(0,MAX_CHIP), rest=g.list.length-shown.length;
+    const g=G[cur];
     const chips = g.list.length
-      ? `<span class="hd">${g.hd}</span>` + shown.map(([n,p])=>
+      ? `<span class="hd">${g.hd}</span>` + g.list.map(([n,p])=>
           `<button class="pi-chipp" data-n="${n.replace(/"/g,'&quot;')}" title="클릭하면 집행 상세가 열립니다">${n}`
           + (g.date&&p.end_date?`<i>~${p.end_date.slice(2,7).replace('-','.')}</i>`:'')
           + `<i>직접비 ${pct(p.rate_direct)}</i></button>`).join('')
-        + (rest>0?`<button class="pi-chipp more" data-more="1" title="과제 정보 탭에서 전체 보기">+${rest}개 더</button>`:'')
       : `<span class="pi-none">${g.empty}</span>`;
     strip.innerHTML = stat('year','올해 종료',closing.length)
                     + stat('next',NEXT_YEAR+'년 종료',nextY.length)
-                    + `<div class="pi-soon">${chips}</div>`;
+                    + `<div class="pi-soon">${chips}</div>`
+                    + `<button class="pi-chipp more" data-more="1"
+                        title="단계·연차·연구개발기간 전체 표로 이동">과제 정보 탭에서 보기 →</button>`;
   }
   paint();
   strip.addEventListener('click',e=>{
