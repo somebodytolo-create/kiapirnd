@@ -507,6 +507,70 @@ tbody tr:hover{background:#fafbfc}
   </div>
   </div>
 
+
+  <div class="view" id="view-forecast">
+    <div class="card">
+    <h2>과제별 최종 예상 집행률 · 예상 잔액</h2>
+    <div class="desc">현재 집행 누계 + 하반기 집행계획(팀 취합) 중 <b>아직 집행되지 않은 잔여분</b>으로 연말 집행을 전망합니다. 계획대로 집행이 진행되면 예상치는 흔들리지 않습니다. 위험 → 정상 순 정렬. <b style="color:var(--red)">직접비는 80%를 반드시 넘어야 하며, 미달 과제는 별도 표시됩니다.</b></div>
+
+    <div class="lt-row" id="fc-lights"></div>
+
+    <div class="expl">
+      신호등은 각 과제의 <b>직접비 예상 집행률</b>을 기준으로 나눕니다. 직접비는 <b>80%를 반드시 넘어야</b> 하므로 미달(80% 미만)이 위험입니다.
+      <div class="grades">
+        <span><i class="g ok"></i><b>정상</b> · 직접비 90% 이상</span>
+        <span><i class="g warn"></i><b>양호</b> · 80~90%</span>
+        <span><i class="g risk"></i><b>위험</b> · 80% 미만(미달)</span>
+      </div>
+      <div class="tip">※ 제출하신 하반기 집행계획 조사표를 기반으로 한 <b>연말 전망 기준</b>입니다. <b style="color:var(--accent)">인건비·연구수당·간접비는 연말 100% 집행으로 가정하였습니다.</b></div>
+      <div class="expl-notes">
+        <div class="nh">계산 기준 · 데이터 메모 (검토 포인트)</div>
+        <ul id="fc-notes"></ul>
+      </div>
+    </div>
+
+    <div class="unit-note"><span class="unit-tag">단위: 천원</span></div>
+    <div class="tscroll"><table id="fc-ptable">
+      <thead><tr>
+        <th>상태</th><th>과제</th>
+        <th class="r">예산</th><th class="r">현재 집행</th><th class="r">하반기 계획</th>
+        <th class="r">계획 소진<br>(집행 완료분)</th>
+        <th class="r">최종 예상 집행</th><th class="r">직접비 집행률<br>(예상·80%↑)</th><th class="r">예상 잔액</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="fc-planfoot" id="fc-planfoot"></div>
+  </div>
+
+  <div class="card">
+    <h2>비목별 잔여 예산 흐름<span class="unit-tag">단위: 천원</span></h2>
+    <div class="desc">전 과제 비목 합계. 각 막대는 해당 비목 예산의 100%이며, 집행 → 계획 → 자동집행 예정 → 미계획 잔여로 나뉩니다.</div>
+    <div class="flow" id="fc-flow"></div>
+    <div class="legend">
+      <span class="k"><span class="sw exec"></span>현재 집행</span>
+      <span class="k"><span class="sw plan"></span>잔여 계획 · 조사표 계획 중 아직 미집행분</span>
+      <span class="k"><span class="sw auto"></span>자동집행 예정 · 인건비·연구수당·간접비(연말 100%)</span>
+      <span class="k"><span class="sw idle"></span>미계획 잔여 · 실질 불용액</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>미귀속 하반기 계획 (과제 미정)<span class="unit-tag" id="fc-undtag"></span><span class="unit-tag">단위: 천원</span></h2>
+    <div class="desc">아직 특정 과제에 배정되지 않은 계획 항목입니다. “타 사업 예산 협의 후 진행 예정” 상태라 위 과제별 집계·신호등에는 포함되지 않았습니다.</div>
+    <div class="tscroll"><table id="fc-undtable">
+      <colgroup>
+        <col style="width:104px"><col style="width:78px"><col><col style="width:96px">
+        <col style="width:104px"><col style="width:70px"><col style="width:216px">
+      </colgroup>
+      <thead><tr>
+        <th>팀</th><th>세목</th><th>항목</th><th>집행 예정월</th><th class="r">예정금액</th><th>담당</th><th>비고</th>
+      </tr></thead>
+      <tbody></tbody>
+      <tfoot></tfoot>
+    </table></div>
+  </div>
+  </div>
+
   <div class="footer">Copyright ⓒ KIAPI All rights reserved.</div>
 </div>
 
